@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>task6</title>
+    <style>
+        #button {
+            display: inline-block;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            background-color: rgba(255, 164, 66, 0.86);
+            display: inline-block;
+            width: 50px;
+            padding: 10px;
+            margin-left: 10px;
+            color: white;
+        }
+
+        .blue {
+            background-color: blue;
+        }
+    </style>
+</head>
+
+<body>
+    <textarea id="input" type="text"></textarea>
+    <div id="button">
+        <button id="click1">左侧入</button>
+        <button id="click2">右侧入</button>
+        <button id="click3">左侧出</button>
+        <button id="click4">右侧出</button>
+    </div>
+    <input id="key-word" type="text" placeholder="请输入查询词！">
+    <button id="search">查询</button>
+    <ul id="result">
+    </ul>
+    <script>
+        var ques = function (id) {
+            return document.getElementById(id);
+        }
+        var number = [];
+        ques("button").addEventListener("click", function (e) {
+            var target = e.target;
+            switch (target.id) {
+                case "click1": {
+                    cutString();
+                    show();
+                    break;
+                }
+                case "click2": {
+                    cutString();
+                    show();
+                    break;
+                }
+                case "click3": {
+                    alert(number.shift(number[number.length - 1]));
+                    show();
+                    break;
+                }
+                case "click4": {
+                    alert(number.pop(number[0]));
+                    show();
+                    break;
+                }
+            }
+        })
+        ques("result").addEventListener("click", function (e) {
+            var target = e.target;
+            if (target.nodeName != "LI") return;
+            var tar = parseInt(target.getAttribute("id"));
+            number.splice(tar, 1);
+            show();
+            return number;
+        })
+
+        function show() {
+            var detail = " ";
+            for (var i = 0; i < number.length; i++) {
+                detail += "<li id='" + i + "'>" + number[i] + "</li>";
+            }
+            result.innerHTML = detail;
+        }
+
+        function cutString() {
+            var value = ques("input").value;
+            var content = value.split(/[\s\n\r\，\,\、\t\ ]/);
+            for (var i = 0; i < content.length; i++) {
+                if (content[i] == "" || typeof (content[i]) == "undefined") {
+                    content.splice(i, 1);
+                    i--;
+                }
+            }
+            number = content;
+        }
+
+        ques("test").onclick = function () {
+            var keyWord = ques("key-word").value,
+                detail = " ";
+            for (var i = 0; i < number.length; i++) {
+                if (number[i].match(keyWord) != null && keyWord != "") {
+                    detail += "<li id='" + i + "'class='blue'>" + number[i] + "</li>";
+
+                }
+                else detail += "<li id='" + i + "'>" + number[i] + "</li>";
+
+            }
+            result.innerHTML = detail;
+
+        }
+    </script>
+
+</body>
+
+
+</html>
